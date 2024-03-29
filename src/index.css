@@ -1,0 +1,164 @@
+.bold {
+  font-weight: 600;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: white;
+  color: black;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+}
+
+.header {
+  background-color: #f7f7f7;
+  border-bottom: solid 1px #e3e3e3;
+  display: flex;
+}
+
+.title {
+  padding: 20px;
+  font-size: 50px;
+  margin-right: auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.topSection {
+  background-color: #f7f7f7;
+  border: solid 1px #e3e3e3;
+  margin-top: 10px;
+}
+
+fieldset {
+  margin: 10px;
+}
+
+input,
+select,
+label {
+  margin: 4px;
+}
+
+.bottomSection {
+  display: flex;
+}
+
+.graph {
+  /* border: 1px solid firebrick; */
+  height: 70vh;
+}
+
+button,
+input {
+  border: none;
+  border-radius: 8px;
+  line-height: 1.5;
+  box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+  font-size: 1rem;
+}
+
+button:hover {
+  box-shadow: 0 0px 1px hsla(111, 100%, 54%, 0.067),
+    0 1px 2px hsla(0, 0%, 0%, 0.2);
+}
+
+.addButton {
+  padding: 4px;
+  font-weight: 800;
+}
+
+input {
+  outline: none;
+  border: none;
+  padding: 5.5px;
+}
+
+.weightDiv {
+  width: 10rem;
+  padding: 6px;
+}
+
+.divWrapper {
+  display: flex;
+  margin: 10px;
+  border: 1.5px lightblue solid;
+}
+
+.remove {
+  padding: 5px;
+}
+
+.remove:hover {
+  background-color: #3992ff;
+}
+
+.deleteAll {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.addState {
+  position: absolute;
+  right: 10px;
+  top: 60px;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.point {
+  transition: transform 0.4s;
+}
+
+.point:hover {
+  transform: scale(1.75);
+}
+
+.info {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.6s, opacity 0.6s;
+}
+
+.moreInfo {
+  position: relative;
+  border: 3px solid black;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  /*
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  */
+}
+
+.moreInfo::after {
+  position: absolute;
+  left: 30px;
+  top: -10px;
+  display: none;
+  width: 25rem;
+  content: "To make the graph readable data points are omitted when they are too close together. "
+    attr(data-removed) " data points have been omitted from this graph.";
+  background: gray;
+  color: black;
+}
+
+.moreInfo:hover::after {
+  display: block;
+}
