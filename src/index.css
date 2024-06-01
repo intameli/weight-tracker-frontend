@@ -21,12 +21,20 @@ body {
   background-color: #f7f7f7;
   border-bottom: solid 1px #e3e3e3;
   display: flex;
+  gap: 2rem;
+  align-items: center;
 }
 
 .title {
   padding: 20px;
   font-size: 50px;
-  margin-right: auto;
+  align-items: center;
+}
+
+nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .container {
@@ -60,18 +68,45 @@ label {
   height: 70vh;
 }
 
-button,
-input {
+a {
+  all: unset;
+}
+
+.navBtn {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+button {
+  background: none;
+  color: inherit;
   border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.btn,
+input {
   border-radius: 8px;
   line-height: 1.5;
   box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
   font-size: 1rem;
+  background-color: rgb(254, 254, 254);
 }
 
-button:hover {
+.btn:hover {
   box-shadow: 0 0px 1px hsla(111, 100%, 54%, 0.067),
     0 1px 2px hsla(0, 0%, 0%, 0.2);
+}
+
+.login {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
 .addButton {
@@ -85,15 +120,22 @@ input {
   padding: 5.5px;
 }
 
+.filler {
+  width: 16rem;
+  margin: 10px;
+}
+
 .weightDiv {
-  width: 10rem;
+  /* width: 10rem; */
   padding: 6px;
 }
 
 .divWrapper {
   display: flex;
+  justify-content: space-between;
   margin: 10px;
   border: 1.5px lightblue solid;
+  width: 16rem;
 }
 
 .remove {

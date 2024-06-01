@@ -15,13 +15,21 @@ export default function Root() {
       <div className="header">
         <h1 className="title">Weight Tracker</h1>
         <nav className="nav">
-          <NavLink to={"/"}>Home</NavLink>
+          <NavLink className="navBtn" to={"/"}>
+            Home
+          </NavLink>
           {user ? (
-            <button onClick={logout}>Logout</button>
+            <button className="navBtn" onClick={logout}>
+              Logout
+            </button>
           ) : (
             <>
-              <NavLink to={"login"}>Login</NavLink>
-              <NavLink to={"signup"}>Sign up</NavLink>
+              <NavLink className="navBtn" to={"login"}>
+                Login
+              </NavLink>
+              <NavLink className="navBtn" to={"signup"}>
+                Sign up
+              </NavLink>
             </>
           )}
         </nav>

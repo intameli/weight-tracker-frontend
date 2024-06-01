@@ -12,7 +12,7 @@ export default function Login() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="login" onSubmit={handleSubmit}>
       <label>Username:</label>
       <input
         type="text"
@@ -25,7 +25,9 @@ export default function Login() {
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
-      <button disabled={isLoading}>Login</button>
+      <button className="btn" disabled={isLoading}>
+        Login
+      </button>
       {error && <p>{error}</p>}
     </form>
   );

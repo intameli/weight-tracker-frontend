@@ -143,7 +143,7 @@ export function WeightForm({
           }
         }}
       />
-      <button className="addButton" type="submit">
+      <button className="addButton btn" type="submit">
         Log
       </button>
     </form>

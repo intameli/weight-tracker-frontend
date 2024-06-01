@@ -1,5 +1,5 @@
-import { Profiler, useEffect, useRef, useState } from "react";
-import { Graph } from "./Graph2.jsx";
+import { useEffect, useRef, useState } from "react";
+import { Graph } from "./Graph.jsx";
 import { WeightCards } from "./WeightCards.jsx";
 import { WeightForm } from "./WeightForm.jsx";
 import { useContext } from "react";
@@ -60,45 +60,9 @@ export default function App() {
     }
   }, [user]);
 
-  let arr = [];
-  function profile(id, phase, actualDuration) {
-    arr.push(actualDuration);
-    console.log(arr.reduce((a, b) => a + b, 0) / arr.length);
-  }
-  function randomWeight() {
-    const n = 60 + Math.ceil(Math.random() * 8);
-    return n.toString();
-  }
-
   return (
     <div className="container">
       <div className="topSection">
-        <button
-          className="deleteAll"
-          onClick={() => {
-            localStorage.clear();
-            window.location.reload();
-          }}
-        >
-          Delete local storage
-        </button>
-        <button
-          className="addState"
-          onClick={() => {
-            let arr = [];
-            for (let i = 0; i < 800; i++) {
-              arr.push({
-                id: i,
-                value: randomWeight(),
-                units: "kg",
-                date: new Date(i).toISOString(),
-              });
-            }
-            setWeights(arr);
-          }}
-        >
-          Add State
-        </button>
         <WeightForm
           settings={settings}
           setSettings={setSettings}
@@ -114,9 +78,7 @@ export default function App() {
           setWeights={setWeights}
           inputRef={inputRef}
         />
-        <Profiler id="graph" onRender={profile}>
-          <Graph settings={settings} weights={weights} />
-        </Profiler>
+        <Graph settings={settings} weights={weights} />
       </div>
     </div>
   );

@@ -27,21 +27,28 @@ export function WeightCards({ settings, weights, setWeights, inputRef }) {
 
   return (
     <div>
-      {weights.map((w) => {
-        return (
-          <div key={w._id} className="divWrapper">
-            <div className="weightDiv">
-              <p className="bold">
-                {formatWeight(w, settings) + " " + settings.units}
-              </p>
-              <p>{formatDate(w.createdAt, settings.showTime)}</p>
+      {weights.length == 0 ? (
+        <div className="filler">Weights will appear here once entered</div>
+      ) : (
+        weights.map((w) => {
+          return (
+            <div key={w._id} className="divWrapper">
+              <div className="weightDiv">
+                <p className="bold">
+                  {formatWeight(w, settings) + " " + settings.units}
+                </p>
+                <p>{formatDate(w.createdAt, settings.showTime)}</p>
+              </div>
+              <button
+                className="remove btn"
+                onClick={() => handleRemove(w._id)}
+              >
+                Remove
+              </button>
             </div>
-            <button className="remove" onClick={() => handleRemove(w._id)}>
-              Remove
-            </button>
-          </div>
-        );
-      })}
+          );
+        })
+      )}
     </div>
   );
 }

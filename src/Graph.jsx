@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export function Graph({ settings, weights }) {
   //show time at bottom?
+  //add information hover thing that tells you how many data points were ignored
   const [showInfo, setShowInfo] = useState(null);
 
   const boxWidth = 160;
@@ -11,10 +12,10 @@ export function Graph({ settings, weights }) {
   const height = 600;
   const marginVert = 80;
   const marginHori = 20;
-  let prevX = -100;
-  let prevX2 = -100;
+  let prevX = width * 2;
+  let removed = 0;
   let minValue, maxValue, step, start, end;
-  let newWeights = JSON.parse(JSON.stringify(weights));
+  const weightArr = weights.map((w) => formatWeight(w, settings));
 
   switch (settings.units) {
     case "kg":
@@ -33,17 +34,11 @@ export function Graph({ settings, weights }) {
       maxValue = 13;
       break;
   }
-
-  newWeights.reverse();
-  newWeights.forEach((w) => {
-    w.value = formatWeight(w, settings);
-  });
-  if (newWeights.length) {
-    start = Date.parse(newWeights[0].date);
-    end = Date.parse(newWeights[newWeights.length - 1].date);
-    const weightsArr = newWeights.map((w) => w.value);
-    minValue = Math.min(...weightsArr);
-    maxValue = Math.max(...weightsArr);
+  if (weightArr.length) {
+    end = Date.parse(weights[0].createdAt);
+    start = Date.parse(weights[weights.length - 1].createdAt);
+    minValue = Math.min(...weightArr);
+    maxValue = Math.max(...weightArr);
   }
   const bottomXGridLine = Math.floor(minValue / step) * step - step;
   const topXGridLine = Math.ceil(maxValue / step) * step + step;
@@ -51,13 +46,78 @@ export function Graph({ settings, weights }) {
   const xStepValue = height / xSteps;
 
   let points = "";
-  newWeights.forEach((w) => {
-    const date = Date.parse(w.date);
-    w.x = ((date - start) / (end - start)) * width || 0;
-    w.y =
-      ((topXGridLine - w.value) / (topXGridLine - bottomXGridLine)) * height;
-    points += `${w.x},${w.y} `;
+  let circles = [];
+  let infoBoxes = [];
+  weights.forEach((w, i) => {
+    const date = Date.parse(w.createdAt);
+    const x = ((date - start) / (end - start)) * width || 0;
+    if (x > prevX - 4) {
+      removed += 1;
+      return;
+    }
+    prevX = x;
+    const value = weightArr[i];
+    const y =
+      ((topXGridLine - value) / (topXGridLine - bottomXGridLine)) * height;
+    points = `${x},${y} ` + points;
+    circles.push(
+      <circle
+        key={w._id}
+        onMouseEnter={() => setShowInfo(w._id)}
+        onMouseLeave={() => setShowInfo(null)}
+        className="point"
+        style={{ transformOrigin: `${x}px ${y}px` }}
+        //need to apply in style because of transformOrigin not
+        //working in react
+        stroke="transparent"
+        strokeWidth="3"
+        cx={x}
+        cy={y}
+        r="7"
+        fill="red"
+      />
+    );
+    let gOffset = 0;
+    if (x < boxWidth / 2) {
+      gOffset = boxWidth / 2 - x;
+    } else if (x > width - boxWidth / 2) {
+      gOffset = -boxWidth / 2 + (width - x);
+    }
+    infoBoxes.push(
+      <g
+        style={
+          showInfo === w._id
+            ? {
+                visibility: "visible",
+                opacity: 1,
+              }
+            : {}
+        }
+        key={w._id}
+        className="info"
+        transform={`translate(${x + gOffset} ${y})`}
+      >
+        <rect
+          fill="grey"
+          rx="30"
+          ry="30"
+          x="-80"
+          y="-110"
+          width={boxWidth}
+          height="80"
+        />
+        <text x="0" y="-70" textAnchor="middle" fontSize="2rem">
+          {value + " " + settings.units}
+        </text>
+        <text x="0" y="-45" textAnchor="middle" fontSize="1rem">
+          {formatDate(w.createdAt, settings.showTime)}
+        </text>
+      </g>
+    );
   });
+  //push then reverse is faster than unshift
+  circles.reverse();
+  infoBoxes.reverse();
 
   let xGridLines = [];
   for (let x = 0; x < xSteps; x += 1) {
@@ -79,93 +139,44 @@ export function Graph({ settings, weights }) {
   }
 
   return (
-    <svg
-      className="graph"
-      viewBox={`0 0 ${width + marginHori * 2} ${height + marginVert * 2}`}
-      width="40vw"
-    >
-      <g transform={`translate(${marginHori} ${marginVert})`}>
-        {xGridLines.map((l) => l)}
-        <line
-          x1="0"
-          y1="0"
-          x2="0"
-          y2={height}
-          stroke="black"
-          strokeWidth="10"
-        />
-        <line
-          x1={width}
-          y1={height}
-          x2="0"
-          y2={height}
-          stroke="black"
-          strokeWidth="10"
-        />
-        <polyline points={points} fill="none" stroke="red" />
-        {newWeights.map((w) => {
-          if (w.x < prevX + 10) return;
-          else prevX = w.x;
-          return (
-            <circle
-              key={w.id}
-              onMouseEnter={() => setShowInfo(w.id)}
-              onMouseLeave={() => setShowInfo(null)}
-              className="point"
-              style={{ transformOrigin: `${w.x}px ${w.y}px` }}
-              //need to apply in style because of transformOrigin not
-              //working in react
-              stroke="transparent"
-              strokeWidth="3"
-              cx={w.x}
-              cy={w.y}
-              r="7"
-              fill="red"
-            />
-          );
-        })}
-        {newWeights.map((w) => {
-          if (w.x < prevX2 + 10) return;
-          else prevX2 = w.x;
-          let gOffset = 0;
-          if (w.x < boxWidth / 2) {
-            gOffset = boxWidth / 2 - w.x;
-          } else if (w.x > width - boxWidth / 2) {
-            gOffset = -boxWidth / 2 + (width - w.x);
-          }
-          return (
-            <g
-              style={
-                showInfo === w.id
-                  ? {
-                      visibility: "visible",
-                      opacity: 1,
-                    }
-                  : {}
-              }
-              key={w.id}
-              className="info"
-              transform={`translate(${w.x + gOffset} ${w.y})`}
-            >
-              <rect
-                fill="grey"
-                rx="30"
-                ry="30"
-                x="-80"
-                y="-110"
-                width={boxWidth}
-                height="80"
-              />
-              <text x="0" y="-70" textAnchor="middle" fontSize="2rem">
-                {w.value + " " + settings.units}
-              </text>
-              <text x="0" y="-45" textAnchor="middle" fontSize="1rem">
-                {formatDate(w.date, settings.showTime)}
-              </text>
-            </g>
-          );
-        })}
-      </g>
-    </svg>
+    <div>
+      <MoreInfo removed={removed} />
+      <svg
+        className="graph"
+        viewBox={`0 0 ${width + marginHori * 2} ${height + marginVert * 2}`}
+      >
+        <g transform={`translate(${marginHori} ${marginVert})`}>
+          {xGridLines.map((l) => l)}
+          <line
+            x1="0"
+            y1="0"
+            x2="0"
+            y2={height}
+            stroke="black"
+            strokeWidth="10"
+          />
+          <line
+            x1={width}
+            y1={height}
+            x2="0"
+            y2={height}
+            stroke="black"
+            strokeWidth="10"
+          />
+          <polyline points={points} fill="none" stroke="red" />
+          {circles.map((c) => c)}
+          {infoBoxes.map((b) => b)}
+        </g>
+      </svg>
+    </div>
+  );
+}
+
+function MoreInfo({ removed }) {
+  //should only be rendered if removed in >0
+  return (
+    <div className="moreInfo" data-removed={removed}>
+      i
+    </div>
   );
 }
