@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { UserContext } from "./context/userContext";
+import { UserContext } from "./UserContext";
 import { v4 as uuidv4 } from "uuid";
 
 export function WeightForm({

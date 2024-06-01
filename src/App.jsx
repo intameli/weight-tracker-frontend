@@ -3,7 +3,7 @@ import { Graph } from "./Graph.jsx";
 import { WeightCards } from "./WeightCards.jsx";
 import { WeightForm } from "./WeightForm.jsx";
 import { useContext } from "react";
-import { UserContext } from "./context/userContext";
+import { UserContext } from "./UserContext.jsx";
 
 //should buttons have different cursor on hover?
 //number incrementer built into input is useless, user should just type

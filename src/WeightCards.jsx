@@ -1,6 +1,6 @@
 import { formatWeight, formatDate } from "./util.jsx";
 import { useContext } from "react";
-import { UserContext } from "./context/userContext";
+import { UserContext } from "./UserContext.jsx";
 
 export function WeightCards({ settings, weights, setWeights, inputRef }) {
   const { user } = useContext(UserContext);

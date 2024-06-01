@@ -8,7 +8,7 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import { UserContext } from "./context/userContext.jsx";
+import { UserContext } from "./userContext";
 
 const router = createBrowserRouter([
   {

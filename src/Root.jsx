@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { UserContext } from "./context/userContext";
+import { UserContext } from "./UserContext";
 
 export default function Root() {
   const { user, setUser } = useContext(UserContext);
