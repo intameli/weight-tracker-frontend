@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useContext } from "react";
-import { UserContext } from "./userContext";
+import { UserContext } from "./UserContext";
 
 export function useSignUp() {
   const [error, setError] = useState(null);
