@@ -109,6 +109,10 @@ input {
   gap: 1rem;
 }
 
+.loginBtn {
+  padding: 5px;
+}
+
 .addButton {
   padding: 4px;
   font-weight: 800;
@@ -134,7 +138,6 @@ input {
   display: flex;
   justify-content: space-between;
   margin: 10px;
-  border: 1.5px lightblue solid;
   width: 16rem;
 }
 
@@ -144,22 +147,6 @@ input {
 
 .remove:hover {
   background-color: #3992ff;
-}
-
-.deleteAll {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  border-radius: 10px;
-  padding: 5px;
-}
-
-.addState {
-  position: absolute;
-  right: 10px;
-  top: 60px;
-  border-radius: 10px;
-  padding: 5px;
 }
 
 .point {
@@ -191,16 +178,24 @@ input {
 
 .moreInfo::after {
   position: absolute;
-  left: 30px;
+  right: 30px;
   top: -10px;
+  /* left: 30px;
+  top: -10px; */
   display: none;
   width: 25rem;
   content: "To make the graph readable data points are omitted when they are too close together. "
     attr(data-removed) " data points have been omitted from this graph.";
-  background: gray;
+  background: rgb(198, 198, 198);
   color: black;
 }
 
 .moreInfo:hover::after {
   display: block;
+}
+
+.graphContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
 }

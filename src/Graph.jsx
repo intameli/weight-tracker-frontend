@@ -10,7 +10,7 @@ export function Graph({ settings, weights }) {
   const boxWidth = 160;
   const width = 600;
   const height = 600;
-  const marginVert = 80;
+  const marginVert = 65;
   const marginHori = 20;
   let prevX = width * 2;
   let removed = 0;
@@ -139,7 +139,7 @@ export function Graph({ settings, weights }) {
   }
 
   return (
-    <div>
+    <div className="graphContainer">
       <MoreInfo removed={removed} />
       <svg
         className="graph"
